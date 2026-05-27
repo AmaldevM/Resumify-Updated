@@ -7,7 +7,7 @@ import { Observable, tap, BehaviorSubject } from 'rxjs';
 })
 export class AuthService {
   private apiUrl = typeof window !== 'undefined' && window.location.hostname !== 'localhost'
-    ? 'https://resumify-backend.onrender.com/api/auth'
+    ? 'https://resumify-ai-resumeparsing.onrender.com/api/auth'
     : 'http://localhost:8080/api/auth';
 
   // 🟢 BehaviorSubject to track login status

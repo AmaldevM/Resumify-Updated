@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class UploadService {
 
   private baseUrl = typeof window !== 'undefined' && window.location.hostname !== 'localhost'
-    ? 'https://resumify-backend.onrender.com'
+    ? 'https://resumify-ai-resumeparsing.onrender.com'
     : 'http://localhost:8080';
 
   constructor(private http: HttpClient) { }
