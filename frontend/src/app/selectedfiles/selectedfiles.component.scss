@@ -1,0 +1,400 @@
+@use "@angular/material" as mat;
+@use "sass:color";
+
+// Color Palette
+$primary: #30d158;
+$primary-dark: #2ecc71;
+$primary-light: #a0e8af;
+$dark-bg: #0f0f0f;
+$card-bg: #1a1a1a;
+$medium-gray: #434343;
+$text-gray: #ccc;
+$light-gray: #ddd;
+$error-red: #ff4d4f;
+$divider: rgba(255, 255, 255, 0.12);
+
+// Design Tokens
+$transition: all 0.3s ease;
+$border-radius: 12px;
+$box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+$card-padding: 2rem;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin card-style {
+  background: $card-bg;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  padding: $card-padding;
+  transition: $transition;
+  border: 1px solid rgba($primary, 0.1);
+}
+
+// Component Styles
+.upload-container {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  @media (min-width: 768px) {
+    margin: 3rem auto;
+  }
+}
+
+.upload-header {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  .upload-title {
+    color: $primary;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  .upload-subtitle {
+    color: $text-gray;
+    font-size: 1rem;
+  }
+}
+
+.upload-area {
+  @include card-style;
+  @include flex-center;
+  flex-direction: column;
+  text-align: center;
+  padding: 2.5rem;
+  border: 2px dashed rgba($primary, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+
+  &:hover {
+    border-color: $primary;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  &.dragging {
+    background: color.adjust($card-bg,$lightness : 5%);
+    border-color: $primary;
+
+    .upload-icon svg .arrow {
+      animation: bounce 1s infinite;
+    }
+  }
+}
+
+.upload-visuals {
+  position: relative;
+  margin-bottom: 1.5rem;
+
+  .upload-icon {
+    width: 80px;
+    height: 80px;
+    @include flex-center;
+
+    svg {
+      width: 100%;
+      height: 100%;
+
+      .cloud {
+        stroke-dasharray: 100;
+        stroke-dashoffset: 100;
+        animation: draw 1.5s forwards;
+      }
+
+      .arrow {
+        opacity: 0;
+        animation: fadeIn 0.5s 1s forwards;
+      }
+    }
+  }
+
+  .scanning-animation {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid rgba($primary, 0.1);
+    animation: pulse 2s infinite;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 50%;
+      border: 2px solid rgba($primary, 0.2);
+      animation: pulse 2s 0.5s infinite;
+    }
+  }
+}
+
+.upload-instruction {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.upload-alternate {
+  @include flex-center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  color: $text-gray;
+
+  .browse-label {
+    color: $primary;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $primary-dark;
+      text-decoration: underline;
+    }
+  }
+
+  .file-requirements {
+    width: 100%;
+    font-size: 0.85rem;
+    color: rgba($text-gray, 0.7);
+  }
+}
+
+.file-list {
+  width: 100%;
+  margin-bottom: 1.5rem;
+
+  .file-list-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid $divider;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    color: $text-gray;
+
+    .file-count {
+      color: $primary;
+    }
+  }
+
+  .file-list-items {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba($primary, 0.05);
+      border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba($primary, 0.3);
+      border-radius: 3px;
+    }
+  }
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  background: rgba($primary, 0.05);
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba($primary, 0.1);
+  }
+
+  .file-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 0.75rem;
+    @include flex-center;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .file-details {
+    flex: 1;
+    min-width: 0;
+
+    .file-name {
+      color: white;
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .file-size {
+      color: $text-gray;
+      font-size: 0.8rem;
+      margin: 0;
+    }
+  }
+
+  .remove-btn {
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    margin-left: 0.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    @include flex-center;
+    transition: all 0.2s ease;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    &:hover {
+      background: rgba($error-red, 0.1);
+    }
+  }
+}
+
+.empty-state {
+  color: $text-gray;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+
+  button {
+    flex: 1;
+    padding: 0.875rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    @include flex-center;
+    gap: 0.5rem;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .back-btn {
+    background: rgba($text-gray, 0.1);
+    color: $text-gray;
+    border: 1px solid rgba($text-gray, 0.2);
+
+    &:hover {
+      background: rgba($text-gray, 0.2);
+    }
+  }
+
+  .continue-btn {
+    background: $primary;
+    color: $dark-bg;
+    border: none;
+
+    &:hover:not([disabled]) {
+      background: $primary-dark;
+    }
+
+    &:disabled {
+      background: rgba($primary, 0.5);
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Animations
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.5;
+  }
+  70% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 0.2;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.5;
+  }
+}
+
+// Responsive Adjustments
+@media (max-width: 480px) {
+  .upload-area {
+    padding: 1.5rem;
+  }
+
+  .upload-visuals {
+    .upload-icon {
+      width: 60px;
+      height: 60px;
+    }
+
+    .scanning-animation {
+      width: 80px;
+      height: 80px;
+    }
+  }
+
+  .action-buttons {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+}

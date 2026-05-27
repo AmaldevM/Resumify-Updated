@@ -1,0 +1,404 @@
+<div class="resume-workspace-container" *ngIf="resume">
+  
+  <!-- Left Side: Visual Resume Preview -->
+  <div class="resume-visual-panel">
+    <div class="panel-header">
+      <i class="fas fa-file-pdf"></i>
+      <span>Resume Document</span>
+    </div>
+    <div class="resume-document-wrapper">
+      <img *ngIf="imageUrl" [src]="imageUrl" alt="Resume Document Preview" class="resume-page-image" />
+      <div *ngIf="!imageUrl" class="no-image-placeholder">
+        <div class="spinner-pulse"></div>
+        <p>Generating document preview...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Side: Interactive AI Assistant & Details Workspace -->
+  <div class="resume-interactive-panel">
+    
+    <!-- Workspace Navigation Tabs -->
+    <div class="workspace-tabs">
+      <button 
+        class="tab-btn" 
+        [class.active]="activeTab === 'details'" 
+        (click)="switchTab('details')">
+        <i class="fas fa-list-alt"></i> Parsed Details
+      </button>
+      <button 
+        class="tab-btn" 
+        [class.active]="activeTab === 'ats'" 
+        (click)="switchTab('ats')">
+        <i class="fas fa-bullseye"></i> ATS Score Scanner
+      </button>
+      <button 
+        class="tab-btn" 
+        [class.active]="activeTab === 'enhance'" 
+        (click)="switchTab('enhance')">
+        <i class="fas fa-magic"></i> AI Enhancer
+      </button>
+    </div>
+
+    <!-- Active Tab Workspace Content -->
+    <div class="workspace-content">
+
+      <!-- TAB 1: PARSED DETAILS VIEW -->
+      <div *ngIf="activeTab === 'details'" class="tab-pane details-pane animate-fade-in">
+        
+        <!-- Header Info -->
+        <div class="details-header-card">
+          <div class="details-avatar">
+            {{ resume.name ? resume.name.charAt(0) : 'R' }}
+          </div>
+          <div class="details-title-info">
+            <h2>{{ resume.name || 'Name not parsed' }}</h2>
+            <p class="role-badge">{{ resume.jobPosition || 'Role not parsed' }}</p>
+          </div>
+          <div class="details-contact-grid">
+            <div class="contact-item">
+              <span class="label">Email:</span>
+              <span class="val">{{ resume.email || 'N/A' }}</span>
+            </div>
+            <div class="contact-item">
+              <span class="label">Phone:</span>
+              <span class="val">{{ resume.phone || 'N/A' }}</span>
+            </div>
+            <div class="contact-item">
+              <span class="label">Experience:</span>
+              <span class="val">{{ resume.totalExperienceYears || resume.yearsOfExperience || 0 }} Years</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Summary -->
+        <div class="section-card">
+          <div class="section-title">
+            <i class="fas fa-user-tie"></i> Professional Profile
+          </div>
+          <p class="section-text-content">
+            {{ resume.profileSummary || 'No profile summary parsed. Run AI Enhancer to generate one.' }}
+          </p>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="section-card">
+          <div class="section-title">
+            <i class="fas fa-tools"></i> Core Expertise & Skills
+          </div>
+          <div class="skills-badges-list">
+            <span class="skill-tag" *ngFor="let skill of resume.skills">
+              {{ skill }}
+            </span>
+            <span class="no-skills-msg" *ngIf="!resume.skills || resume.skills.length === 0">
+              No skills extracted.
+            </span>
+          </div>
+        </div>
+
+        <!-- Job Fit Section -->
+        <div class="section-card" *ngIf="resume.jobFit">
+          <div class="section-title">
+            <i class="fas fa-check-circle"></i> Job Fit & Context
+          </div>
+          <p class="section-text-content">{{ resume.jobFit }}</p>
+        </div>
+
+        <!-- Education Section -->
+        <div class="section-card">
+          <div class="section-title">
+            <i class="fas fa-graduation-cap"></i> Academic Background
+          </div>
+          <div class="timeline-list" *ngIf="resume.education && resume.education.length > 0">
+            <div class="timeline-item" *ngFor="let edu of resume.education">
+              <div class="timeline-meta">
+                <span class="timeline-years">{{ edu.years || 'N/A' }}</span>
+              </div>
+              <div class="timeline-details">
+                <h4 class="timeline-title">{{ edu.degree }}</h4>
+                <p class="timeline-sub">{{ edu.institute }}</p>
+              </div>
+            </div>
+          </div>
+          <p class="empty-section-text" *ngIf="!resume.education || resume.education.length === 0">
+            No education entries parsed.
+          </p>
+        </div>
+
+        <!-- Work Experience Section -->
+        <div class="section-card">
+          <div class="section-title">
+            <i class="fas fa-briefcase"></i> Work History
+          </div>
+          <div class="timeline-list" *ngIf="resume.experience && resume.experience.length > 0">
+            <div class="timeline-item" *ngFor="let exp of resume.experience">
+              <div class="timeline-meta">
+                <span class="timeline-years">{{ exp.years || 'N/A' }}</span>
+              </div>
+              <div class="timeline-details">
+                <h4 class="timeline-title">{{ exp.title }}</h4>
+                <p class="timeline-sub">{{ exp.company }}</p>
+                <ul class="timeline-bullets" *ngIf="exp.achievements && exp.achievements.length > 0">
+                  <li *ngFor="let ach of exp.achievements">{{ ach }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <p class="empty-section-text" *ngIf="!resume.experience || resume.experience.length === 0">
+            No work history entries parsed.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- TAB 2: ATS SCORE SCANNER -->
+      <div *ngIf="activeTab === 'ats'" class="tab-pane ats-pane animate-fade-in">
+        
+        <div class="ats-intro">
+          <h3>Evaluate Resume ATS Match</h3>
+          <p>Paste the target job description below to scan your resume for keyword match, compatibility gaps, and scoring metrics.</p>
+        </div>
+
+        <!-- Input Box -->
+        <div class="ats-input-box">
+          <label for="job-desc">Job Description / Requirements</label>
+          <textarea 
+            id="job-desc" 
+            [(ngModel)]="jobDescription" 
+            placeholder="Paste the full job post, role requirements, and description here..."></textarea>
+          
+          <button 
+            class="scan-action-btn" 
+            [disabled]="isAtsScanning || !jobDescription.trim()"
+            (click)="runAtsScan()">
+            <span *ngIf="!isAtsScanning"><i class="fas fa-search-dollar"></i> Scan Match Score</span>
+            <span *ngIf="isAtsScanning"><div class="mini-spinner"></div> Analyzing Resume...</span>
+          </button>
+        </div>
+
+        <!-- Scanning Loader Skeleton -->
+        <div class="loader-skeleton" *ngIf="isAtsScanning">
+          <div class="skeleton-circle"></div>
+          <div class="skeleton-line long"></div>
+          <div class="skeleton-line medium"></div>
+          <div class="skeleton-line short"></div>
+        </div>
+
+        <!-- ATS Scan Results Display -->
+        <div class="ats-results-display animate-fade-in" *ngIf="atsResult && !isAtsScanning">
+          
+          <!-- Score summary cards -->
+          <div class="score-summary-grid">
+            
+            <!-- Circular Gauge -->
+            <div class="score-circle-card">
+              <div class="gauge-wrapper">
+                <svg viewBox="0 0 100 100" class="gauge-svg">
+                  <circle cx="50" cy="50" r="40" class="gauge-bg"></circle>
+                  <circle 
+                    cx="50" 
+                    cy="50" 
+                    r="40" 
+                    class="gauge-fill"
+                    [attr.stroke-dashoffset]="251.2 - (251.2 * atsResult.atsScore) / 100"
+                    [class.poor]="atsResult.atsScore < 60"
+                    [class.good]="atsResult.atsScore >= 60 && atsResult.atsScore < 80"
+                    [class.excellent]="atsResult.atsScore >= 80"></circle>
+                </svg>
+                <div class="gauge-score-value">
+                  <span class="number">{{ atsResult.atsScore }}</span>
+                  <span class="percent">%</span>
+                </div>
+              </div>
+              <p class="score-label">ATS Compatibility Score</p>
+            </div>
+
+            <!-- Profile strength info -->
+            <div class="strength-card">
+              <h4>Profile Strength</h4>
+              <div class="strength-bar-container">
+                <div 
+                  class="strength-bar" 
+                  [style.width.%]="atsResult.resumeStrengthPercentage || atsResult.atsScore"
+                  [class.poor]="(atsResult.resumeStrengthPercentage || atsResult.atsScore) < 60"
+                  [class.good]="(atsResult.resumeStrengthPercentage || atsResult.atsScore) >= 60 && (atsResult.resumeStrengthPercentage || atsResult.atsScore) < 80"
+                  [class.excellent]="(atsResult.resumeStrengthPercentage || atsResult.atsScore) >= 80"></div>
+              </div>
+              <p class="strength-desc">
+                Your resume satisfies <strong>{{ atsResult.resumeStrengthPercentage || atsResult.atsScore }}%</strong> of the overall candidate strength guidelines for this job.
+              </p>
+            </div>
+
+          </div>
+
+          <!-- Missing Keywords -->
+          <div class="result-section-card">
+            <h4 class="card-title text-warning"><i class="fas fa-exclamation-triangle"></i> Missing Keywords</h4>
+            <p class="result-card-subtitle">Add these keywords to your resume to increase discoverability on scanning software:</p>
+            <div class="keywords-badges-list">
+              <span class="missing-keyword-tag" *ngFor="let kw of atsResult.missingKeywords">
+                {{ kw }}
+              </span>
+              <span class="no-keywords-msg" *ngIf="!atsResult.missingKeywords || atsResult.missingKeywords.length === 0">
+                <i class="fas fa-check-circle"></i> Great job! No major keywords are missing.
+              </span>
+            </div>
+          </div>
+
+          <!-- Skill Gaps -->
+          <div class="result-section-card">
+            <h4 class="card-title text-danger"><i class="fas fa-times-circle"></i> Candidate Skill Gaps</h4>
+            <p class="result-card-subtitle">We identified matching differences between requirements and your profile skills:</p>
+            <ul class="bullet-improvements-list">
+              <li *ngFor="let gap of atsResult.skillGaps">
+                <span class="highlight-bullet">{{ gap }}</span>
+              </li>
+              <li class="success-msg" *ngIf="!atsResult.skillGaps || atsResult.skillGaps.length === 0">
+                <i class="fas fa-star"></i> Skills match matches the job post requirements perfectly!
+              </li>
+            </ul>
+          </div>
+
+          <!-- Suggestions for Improvement -->
+          <div class="result-section-card">
+            <h4 class="card-title text-success"><i class="fas fa-wrench"></i> Suggested Improvements</h4>
+            <p class="result-card-subtitle">Apply these actionable suggestions to make your resume stand out to hiring managers:</p>
+            <ul class="bullet-improvements-list">
+              <li *ngFor="let imp of atsResult.suggestedImprovements">{{ imp }}</li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- TAB 3: AI RESUME ENHANCER -->
+      <div *ngIf="activeTab === 'enhance'" class="tab-pane enhance-pane animate-fade-in">
+        
+        <div class="enhance-intro">
+          <h3>Smart AI Resume Enhancer</h3>
+          <p>Select your target professional role and add custom requests. Our AI will analyze your resume for weak phrasing, improve grammar, suggest active verbs, and rewrite your project statements.</p>
+        </div>
+
+        <div class="enhancer-controls-grid">
+          
+          <!-- Dropdown Role Selection -->
+          <div class="control-item">
+            <label for="target-role">Target Professional Role</label>
+            <select id="target-role" [(ngModel)]="targetRole">
+              <option *ngFor="let option of roleOptions" [value]="option">
+                {{ option }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Text area notes -->
+          <div class="control-item">
+            <label for="custom-instr">Optional: Job description or customization notes</label>
+            <textarea 
+              id="custom-instr" 
+              [(ngModel)]="customInstructions" 
+              placeholder="Paste specific job requirements or direct requests (e.g. 'Emphasize cloud scaling and Kubernetes experience')"></textarea>
+          </div>
+
+          <button 
+            class="enhance-action-btn" 
+            [disabled]="isEnhancing"
+            (click)="runEnhance()">
+            <span *ngIf="!isEnhancing"><i class="fas fa-magic"></i> Generate AI Enhancements</span>
+            <span *ngIf="isEnhancing"><div class="mini-spinner"></div> Rewriting Profile...</span>
+          </button>
+
+        </div>
+
+        <!-- Enhancing Loader Skeleton -->
+        <div class="loader-skeleton" *ngIf="isEnhancing">
+          <div class="skeleton-line long"></div>
+          <div class="skeleton-line medium"></div>
+          <div class="skeleton-line short"></div>
+          <div class="skeleton-line long"></div>
+        </div>
+
+        <!-- Enhancement Results Display -->
+        <div class="enhance-results-display animate-fade-in" *ngIf="enhancementResult && !isEnhancing">
+          
+          <!-- Action Verbs Recommended -->
+          <div class="result-section-card">
+            <h4 class="card-title text-success"><i class="fas fa-rocket"></i> Recommended Action Verbs</h4>
+            <p class="result-card-subtitle">Begin bullet points with these active verbs to sound more impactful and professional:</p>
+            <div class="action-verbs-list">
+              <span class="verb-tag animate-hover-pop" *ngFor="let verb of enhancementResult.actionVerbs">
+                {{ verb }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Weak Phrases Replaced -->
+          <div class="result-section-card">
+            <h4 class="card-title text-warning"><i class="fas fa-lightbulb"></i> Phrase Enhancements</h4>
+            <p class="result-card-subtitle">Replace passive, weak statements with active, metrics-driven descriptions:</p>
+            
+            <div class="phrase-swap-list">
+              <div class="phrase-swap-item" *ngFor="let phrase of enhancementResult.weakPhrases">
+                <div class="original-box">
+                  <span class="badge badge-original">Original</span>
+                  <p class="phrase-text">{{ phrase.original }}</p>
+                </div>
+                <div class="arrow-indicator">
+                  <i class="fas fa-long-arrow-alt-down"></i>
+                </div>
+                <div class="suggestion-box">
+                  <span class="badge badge-suggestion">AI Recommendation</span>
+                  <p class="phrase-text">{{ phrase.suggestion }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grammar & Style Issues -->
+          <div class="result-section-card">
+            <h4 class="card-title text-danger"><i class="fas fa-spellcheck"></i> Grammar & Clarity Fixes</h4>
+            <p class="result-card-subtitle">Correct stylistic inconsistencies and grammatical concerns:</p>
+            
+            <div class="phrase-swap-list">
+              <div class="phrase-swap-item" *ngFor="let issue of enhancementResult.grammarIssues">
+                <div class="original-box">
+                  <span class="badge badge-original">Weak/Grammar Issue</span>
+                  <p class="phrase-text">{{ issue.original }}</p>
+                </div>
+                <div class="arrow-indicator">
+                  <i class="fas fa-long-arrow-alt-down"></i>
+                </div>
+                <div class="suggestion-box">
+                  <span class="badge badge-suggestion">Corrected Version</span>
+                  <p class="phrase-text">{{ issue.suggestion }}</p>
+                </div>
+              </div>
+              <p class="success-msg" *ngIf="!enhancementResult.grammarIssues || enhancementResult.grammarIssues.length === 0">
+                <i class="fas fa-check-double"></i> Style checks passed! No grammar concerns detected.
+              </p>
+            </div>
+          </div>
+
+          <!-- Redesigned project descriptions -->
+          <div class="result-section-card">
+            <h4 class="card-title text-primary"><i class="fas fa-folder-open"></i> Enhanced Projects & Experiences</h4>
+            <p class="result-card-subtitle">AI-suggested rewrites for your major projects to show quantitative impact:</p>
+            
+            <div class="enhanced-projects-list">
+              <div class="enhanced-project-card" *ngFor="let proj of enhancementResult.improvedProjectDescriptions">
+                <h5>{{ proj.title }}</h5>
+                <p class="enhanced-project-desc">{{ proj.description }}</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

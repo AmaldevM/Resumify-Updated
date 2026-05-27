@@ -1,0 +1,1025 @@
+@use "@angular/material" as mat;
+@use "sass:color";
+// Color Palette
+$dark-bg: #0f0f0f;
+$mint-green: #3cb662;
+$medium-gray: #434343;
+$text-gray: #ccc;
+$light-gray: #ddd;
+$accent-green: #2ecc71;
+$transition: all 0.3s ease;
+
+// Design Tokens
+$border-radius: 12px;
+$box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+$section-spacing: 3rem;
+$card-padding: 2rem;
+
+$primary-light: #a0e8af;
+$divider: rgba(255, 255, 255, 0.12);
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin card-style {
+  background: $dark-bg;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  padding: $card-padding;
+  transition: $transition;
+  border: 1px solid rgba($mint-green, 0.1);
+}
+
+@mixin gradient-bg {
+  background: linear-gradient(135deg, $mint-green, $accent-green);
+}
+
+// Base Styles
+.resumify-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+  color: $text-gray;
+}
+
+.content-wrapper {
+  padding: 2rem 0;
+}
+
+section {
+  margin-bottom: $section-spacing;
+  position: relative;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 700;
+  line-height: 1.2;
+  margin-top: 0;
+  color: $light-gray;
+}
+
+h2 {
+  font-size: 2.25rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+p {
+  color: $text-gray;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+strong {
+  color: $light-gray;
+  font-weight: 600;
+}
+/* Resume Parser Section */
+.resume-parser-section {
+  // padding: $section-spacing 0;
+  background: color.adjust($dark-bg, $lightness: 3%);
+  min-height: 100vh;
+  padding: 2rem 0;
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: 3.25rem;
+    margin-bottom: 1rem;
+    color: $light-gray;
+    font-weight: 700;
+  }
+
+  .section-subtitle {
+    text-align: center;
+    font-size: 1.1rem;
+    color: $text-gray;
+    margin-bottom: 3rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .results-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    // margin-top: 2rem;
+
+    @media (max-width: 992px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .resume-card,
+  .parsed-info-card {
+    @include card-style;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+      border-color: rgba($mint-green, 0.3);
+    }
+  }
+
+  /* Resume Card Styles */
+  .resume-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba($mint-green, 0.1);
+
+    .profile-image {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-right: 1.5rem;
+      border: 3px solid rgba($mint-green, 0.2);
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .candidate-info {
+      h3 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: $mint-green;
+      }
+
+      .job-title {
+        color: $accent-green;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+      }
+
+      .contact-info {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        font-size: 0.9rem;
+        color: $text-gray;
+
+        i {
+          margin-right: 0.5rem;
+          color: $mint-green;
+        }
+      }
+    }
+  }
+
+  .resume-section {
+    margin-bottom: 2rem;
+
+    h4 {
+      color: $mint-green;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      font-size: 1.25rem;
+
+      i {
+        margin-right: 0.75rem;
+        font-size: 1.1rem;
+      }
+    }
+
+    p {
+      color: $text-gray;
+      line-height: 1.6;
+    }
+
+    &.two-column {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+
+      @media (max-width: 576px) {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+
+  .education-item,
+  .experience-item {
+    margin-bottom: 1.5rem;
+
+    h5 {
+      font-size: 1.1rem;
+      color: $light-gray;
+      margin-bottom: 0.25rem;
+    }
+
+    .institution,
+    .company {
+      font-weight: 600;
+      color: $accent-green;
+      font-size: 0.95rem;
+    }
+
+    .date {
+      font-size: 0.9rem;
+      color: $text-gray;
+      margin: 0.5rem 0;
+    }
+
+    ul {
+      padding-left: 1.25rem;
+      margin-top: 0.75rem;
+
+      li {
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+        color: $text-gray;
+      }
+    }
+  }
+
+  .skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+
+    .skill-tag {
+      background: rgba($mint-green, 0.1);
+      color: $mint-green;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: $transition;
+
+      &:hover {
+        background: rgba($mint-green, 0.2);
+        transform: translateY(-2px);
+      }
+    }
+  }
+
+  .languages-container {
+    margin-top: 1rem;
+
+    .language-item {
+      margin-bottom: 1rem;
+    }
+
+    .proficiency {
+      display: flex;
+      align-items: center;
+      margin-top: 0.5rem;
+
+      .proficiency-level {
+        height: 6px;
+        border-radius: 3px;
+        margin-right: 0.75rem;
+      }
+
+      .fluent {
+        width: 80px;
+        background: $mint-green;
+      }
+
+      .intermediate {
+        width: 50px;
+        background: $medium-gray;
+      }
+
+      span {
+        font-size: 0.85rem;
+        color: $text-gray;
+      }
+    }
+  }
+
+  /* Parsed Info Card Styles */
+  .parsed-info-card {
+    .parsed-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba($mint-green, 0.1);
+
+      h3 {
+        color: $light-gray;
+        font-size: 1.5rem;
+      }
+
+      .accuracy-badge {
+        display: flex;
+        align-items: center;
+        background: rgba($accent-green, 0.1);
+        color: $accent-green;
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        font-weight: 600;
+
+        i {
+          margin-right: 0.5rem;
+        }
+      }
+    }
+
+    .parsed-section {
+      margin-bottom: 2rem;
+
+      h4 {
+        color: $mint-green;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        font-size: 1.25rem;
+
+        i {
+          margin-right: 0.75rem;
+          font-size: 1.1rem;
+        }
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+
+        tr {
+          border-bottom: 1px solid rgba($mint-green, 0.05);
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          td {
+            padding: 0.75rem 0;
+            vertical-align: middle;
+
+            &:first-child {
+              width: 40%;
+              font-weight: 500;
+              color: $text-gray;
+            }
+
+            &:last-child {
+              color: $light-gray;
+            }
+          }
+        }
+      }
+
+      .skills-cloud {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 1rem;
+
+        span {
+          padding: 0.5rem 1rem;
+          border-radius: 50px;
+          font-size: 0.85rem;
+          background: rgba($mint-green, 0.1);
+          color: $mint-green;
+          transition: $transition;
+
+          &:hover {
+            transform: translateY(-2px);
+          }
+        }
+
+        .skill-large {
+          font-size: 0.95rem;
+          padding: 0.6rem 1.2rem;
+          background: rgba($mint-green, 0.2);
+        }
+
+        .skill-medium {
+          font-size: 0.85rem;
+        }
+
+        .skill-small {
+          font-size: 0.8rem;
+          opacity: 0.8;
+        }
+      }
+
+      .experience-summary {
+        margin-top: 1rem;
+
+        .exp-item {
+          display: flex;
+          margin-bottom: 1.25rem;
+
+          .exp-duration {
+            min-width: 70px;
+            font-weight: 600;
+            color: $mint-green;
+          }
+
+          .exp-details {
+            strong {
+              display: block;
+              color: $light-gray;
+              margin-bottom: 0.25rem;
+            }
+
+            p {
+              color: $text-gray;
+              font-size: 0.9rem;
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+
+      @media (max-width: 576px) {
+        flex-direction: column;
+      }
+
+      .btn {
+        flex: 1;
+        padding: 0.75rem 1.5rem;
+        border-radius: $border-radius;
+        font-weight: 600;
+        cursor: pointer;
+        transition: $transition;
+        text-align: center;
+        border: none;
+
+        &-download {
+          background: rgba($mint-green, 0.1);
+          color: $mint-green;
+
+          &:hover {
+            background: rgba($mint-green, 0.2);
+          }
+        }
+
+        &-apply {
+          @include gradient-bg;
+          color: $dark-bg;
+
+          &:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+          }
+        }
+      }
+    }
+  }
+
+  /* Buttons */
+  .parse-btn {
+    @include gradient-bg;
+    color: $dark-bg;
+    padding: 0.75rem 2rem;
+    border-radius: $border-radius;
+    font-weight: 600;
+    cursor: pointer;
+    transition: $transition;
+    border: none;
+    font-size: 1rem;
+    margin-top: 1rem;
+
+    &:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba($mint-green, 0.2);
+    }
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .resume-parser-section {
+    .container {
+      padding: 0 1.5rem;
+    }
+
+    .section-title {
+      font-size: 1.75rem;
+    }
+
+    .section-subtitle {
+      font-size: 1rem;
+    }
+
+    .upload-box {
+      padding: 2rem 1.5rem;
+    }
+
+    .resume-header {
+      flex-direction: column;
+      text-align: center;
+
+      .profile-image {
+        margin-right: 0;
+        margin-bottom: 1.5rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .resume-parser-section {
+    .container {
+      padding: 0 1rem;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+    }
+
+    .upload-box {
+      padding: 1.5rem 1rem;
+
+      h3 {
+        font-size: 1.25rem;
+      }
+    }
+
+    .resume-card,
+    .parsed-info-card {
+      padding: 1.5rem;
+    }
+  }
+}
+
+// ATS Section
+.ats-container {
+  .ats-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  .ats-column {
+    @include card-style;
+    padding: 2.5rem;
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+    }
+    .ats-heading {
+      color: $accent-green;
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-left: 1.5rem;
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.25em;
+        height: 1em;
+        width: 6px;
+        // background: $mint-green;
+        border-radius: 3px;
+      }
+    }
+    .ats-text {
+      color: $text-gray;
+    }
+  }
+  .ats-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    @media (max-width: 992px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  .atsb1 {
+    @include card-style;
+    background-color: #3cb662;
+    color: $dark-bg;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .ats-bottom-title {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: $dark-bg;
+    }
+    .ats-bottom-text {
+      margin-bottom: 2.5rem;
+      opacity: 0.9;
+      font-size: 1.2rem;
+      text-emphasis: none;
+    }
+    .ats-btn {
+      background-color: $dark-bg;
+      color: $mint-green;
+      padding: 1rem 2rem;
+      border-radius: $border-radius;
+      font-weight: 600;
+      font-size: 1.1rem;
+      align-self: flex-start;
+      transition: $transition;
+      &:hover {
+        background-color: rgba($dark-bg, 0.9);
+        transform: translateY(-2px);
+      }
+    }
+  }
+  .atsb2 {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .ats-card {
+    @include card-style;
+    padding: 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-weight: 500;
+    font-size: 1.1rem;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      background: $mint-green;
+      z-index: -1;
+    }
+    &-contact::before {
+      background: $mint-green;
+    }
+    &-experience::before {
+      background: $accent-green;
+    }
+    &-skills::before {
+      background: $mint-green;
+    }
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+    }
+  }
+}
+
+// Resume ATS Container
+.resume-ats-container {
+  .resume-steps {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 5rem;
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+    .resume-step {
+      @include card-style;
+      padding: 2.5rem;
+      .highlight-heading {
+        color: $accent-green;
+        margin-bottom: 1.5rem;
+        position: relative;
+        &::after {
+          content: "";
+          display: block;
+          width: 60px;
+          height: 4px;
+          background: $mint-green;
+          margin-top: 1rem;
+          border-radius: 2px;
+        }
+      }
+      p {
+        position: relative;
+        padding-left: 1.5rem;
+        &::before {
+          content: "•";
+          position: absolute;
+          left: 0;
+          color: $mint-green;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+  .resume-format-box {
+    @include card-style;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+    @media (max-width: 992px) {
+      grid-template-columns: 1fr;
+    }
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, $mint-green, $accent-green);
+    }
+    .resume-format-left {
+      h1 {
+        color: $accent-green;
+        margin-bottom: 1.5rem;
+      }
+      p {
+        font-size: 1.1rem;
+      }
+    }
+    .resume-format-right {
+      .resume-format-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        li {
+          padding: 1rem 1.5rem;
+          background-color: rgba($mint-green, 0.05);
+          border-radius: 8px;
+          font-weight: 500;
+          transition: $transition;
+          &:hover {
+            background-color: rgba($mint-green, 0.1);
+            transform: translateX(5px);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Resume Features
+.resume-features {
+  .heading {
+    text-align: center;
+    h2 {
+      font-size: 2.5rem;
+      color: $accent-green;
+      margin-bottom: 1.5rem;
+      position: relative;
+      display: inline-block;
+      &::after {
+        content: "";
+        display: block;
+        width: 80px;
+        height: 4px;
+        background: $mint-green;
+        margin: 1.5rem auto 0;
+        border-radius: 2px;
+      }
+    }
+  }
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+    margin-bottom: 2rem;
+    @media (max-width: 992px) {
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 576px) {
+      grid-template-columns: 1fr;
+    }
+    .feature {
+      @include card-style;
+      padding: 2rem;
+      text-align: center;
+      position: relative;
+      padding-top: 4rem;
+      &::before {
+        content: "";
+        position: absolute;
+        top: 1.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 60px;
+        background-color: rgba($mint-green, 0.1);
+        border-radius: 50%;
+      }
+      h3 {
+        color: $mint-green;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+      }
+      p {
+        color: $text-gray;
+      }
+    }
+  }
+  .reviews {
+    text-align: center;
+    margin-top: 6rem;
+    h3 {
+      margin-bottom: 1.5rem;
+      font-size: 1.75rem;
+      color: $accent-green;
+    }
+    .review-summary {
+      margin-bottom: 3rem;
+      .stars {
+        font-size: 2rem;
+        color: #ffc107;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        color: $text-gray;
+        font-size: 1.1rem;
+      }
+    }
+    .review-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      @media (max-width: 992px) {
+        grid-template-columns: 1fr 1fr;
+      }
+      @media (max-width: 576px) {
+        grid-template-columns: 1fr;
+      }
+    }
+    .review-card {
+      @include card-style;
+      text-align: left;
+      padding: 2rem;
+      position: relative;
+      &::before {
+        content: "";
+        position: absolute;
+        top: 1.5rem;
+        left: 2rem;
+        font-size: 4rem;
+        color: rgba($mint-green, 0.1);
+        font-family: serif;
+        line-height: 1;
+      }
+      .stars {
+        color: #ffc107;
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+      }
+      h4 {
+        margin-bottom: 1rem;
+        font-size: 1.25rem;
+      }
+      p {
+        color: $text-gray;
+        margin-bottom: 1.5rem;
+        font-size: 1rem;
+      }
+      span {
+        font-size: 0.85rem;
+        color: color.adjust($text-gray, $lightness: 10%);
+        font-style: italic;
+      }
+    }
+  }
+}
+
+// Contact Section
+.contact-section {
+  .contact-header {
+    text-align: center;
+    margin-top: 2rem;
+    h2 {
+      font-size: 2.5rem;
+      color: $accent-green;
+      margin-bottom: 1.5rem;
+    }
+    p {
+      color: $text-gray;
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 1.1rem;
+    }
+  }
+  .contact-content {
+    display: grid;
+    margin-top: 2rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    @media (max-width: 992px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  .contact-form {
+    @include card-style;
+    padding: 3rem;
+    .form-group {
+      margin-bottom: 2rem;
+      label {
+        display: block;
+        margin-bottom: 0.75rem;
+        font-weight: 500;
+        color: $light-gray;
+      }
+      input,
+      textarea {
+        width: 90%;
+        padding: 1rem;
+        border: 1px solid $medium-gray;
+        border-radius: $border-radius;
+        font-family: inherit;
+        transition: $transition;
+        font-size: 1rem;
+        background-color: color.adjust($dark-bg, $lightness: 5%);
+        color: $text-gray;
+        &:focus {
+          outline: none;
+          border-color: $mint-green;
+          box-shadow: 0 0 0 3px rgba($mint-green, 0.1);
+        }
+      }
+      textarea {
+        min-height: 100px;
+        resize: vertical;
+      }
+    }
+    button {
+      @include gradient-bg;
+      color: $dark-bg;
+      padding: 1rem 2rem;
+      border-radius: $border-radius;
+      width: 100%;
+      font-size: 1.1rem;
+      font-weight: 600;
+      transition: $transition;
+      border: none;
+      cursor: pointer;
+      &:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+      }
+    }
+  }
+  .contact-info {
+    @include card-style;
+    padding: 1rem;
+    background-color: color.adjust($dark-bg, $lightness: 5%);
+    h3 {
+      color: $accent-green;
+      margin-bottom: 1.5rem;
+      font-size: 1.75rem;
+    }
+    p {
+      margin-bottom: 2rem;
+      color: $text-gray;
+    }
+    .extra-info {
+      margin: 3rem 0;
+      padding: 2rem 0;
+      border-top: 1px solid $medium-gray;
+      border-bottom: 1px solid $medium-gray;
+      h4 {
+        color: $light-gray;
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+      }
+      p {
+        margin-bottom: 1.5rem;
+        font-size: 1rem;
+      }
+    }
+    strong {
+      color: $light-gray;
+    }
+  }
+}
