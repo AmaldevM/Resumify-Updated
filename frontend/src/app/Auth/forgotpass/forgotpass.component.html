@@ -1,57 +1,129 @@
-<!-- Only shows when modal is visible -->
-<div class="modal-backdrop" *ngIf="isModalVisible">
-  <div class="modal-container">
+<div class="container">
+  <!-- Glowing Auroras in the background -->
+  <div class="aurora-blur aurora-1"></div>
+  <div class="aurora-blur aurora-2"></div>
+  
+  <div class="auth-card">
+    <!-- Close button to go back to login -->
     <button class="close-btn" (click)="close()">×</button>
 
-    <div class="modal-content">
-      <!-- Left Section: Image -->
-      <div class="left-section">
-        <img src="/assets/images/resume.jpg" alt="resume image" class="resume-img" />
-      </div>
+    <div class="left-side">
+      <div class="showcase-content">
+        <div class="brand">
+          <span class="brand-glow">Resumify AI</span>
+        </div>
+        <h1>Elevate Your Career with <span class="highlight">AI Power</span></h1>
+        <p class="tagline">Optimize your resume, match job roles, and crush ATS scans instantly.</p>
+        
+        <div class="mockup-ats-card">
+          <div class="mockup-header">
+            <span class="pulse-dot"></span>
+            <span class="mockup-title">ATS Sync Scanner</span>
+          </div>
+          <div class="mockup-body">
+            <div class="score-circle">
+              <svg viewBox="0 0 36 36" class="circular-chart green">
+                <path class="circle-bg"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+                <path class="circle"
+                  stroke-dasharray="94, 100"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+                <text x="18" y="20.35" class="percentage">94%</text>
+              </svg>
+            </div>
+            <div class="mockup-stats">
+              <div class="stat-row">
+                <span class="stat-label">Match Score</span>
+                <span class="stat-val text-green">Excellent</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-label">Keywords Found</span>
+                <span class="stat-val">18 / 20</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <!-- Right Section: Form -->
-      <div class="right-section">
-        <h2 *ngIf="step === 'email'">Reset Your Password</h2>
-        <h2 *ngIf="step === 'code'">Enter Verification Code</h2>
+        <div class="floating-skills">
+          <span class="skill-tag skill-1">Angular</span>
+          <span class="skill-tag skill-2">Spring Boot</span>
+          <span class="skill-tag skill-3">ATS Score</span>
+          <span class="skill-tag skill-4">TypeScript</span>
+          <span class="skill-tag skill-5">Gemini AI</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-side">
+      <div class="form-wrapper">
+        <h2 *ngIf="step === 'email'">Reset Password</h2>
+        <h2 *ngIf="step === 'code'">Verification Code</h2>
         <h2 *ngIf="step === 'reset'">Set New Password</h2>
+        
+        <p class="subtitle" *ngIf="step === 'email'">Enter your email to receive recovery instructions</p>
+        <p class="subtitle" *ngIf="step === 'code'">Enter the 6-digit code sent to your email</p>
+        <p class="subtitle" *ngIf="step === 'reset'">Choose a strong new password</p>
 
         <!-- Email Form -->
         <form *ngIf="step === 'email'" [formGroup]="emailForm" (ngSubmit)="sendCode()">
-          <label>Email</label>
-          <input type="email" formControlName="email" placeholder="Enter your email" />
-          <div class="error" *ngIf="email?.touched && email?.invalid">
-            <small *ngIf="email?.errors?.['required']">Email is required</small>
-            <small *ngIf="email?.errors?.['email']">Invalid email</small>
+          <div class="input-group">
+            <label>Email Address</label>
+            <div class="input-wrapper">
+              <input type="email" formControlName="email" placeholder="name@company.com" />
+            </div>
+            <div class="error" *ngIf="email?.touched && email?.invalid">
+              <small *ngIf="email?.errors?.['required']">Email is required</small>
+              <small *ngIf="email?.errors?.['email']">Invalid email format</small>
+            </div>
           </div>
-          <button type="submit" [disabled]="loading">Send Code</button>
+          <button class="submit" type="submit" [disabled]="loading || emailForm.invalid">
+            {{ loading ? 'Sending...' : 'Send Recovery Code' }}
+          </button>
         </form>
 
         <!-- Code Verification Form -->
         <form *ngIf="step === 'code'" [formGroup]="codeForm" (ngSubmit)="verifyCode()">
-          <label>Verification Code</label>
-          <input type="text" formControlName="code" placeholder="6-digit code" maxlength="6" />
-          <div class="error" *ngIf="codeForm.controls['code'].touched && codeForm.controls['code'].invalid">
-            <small *ngIf="codeForm.controls['code'].errors?.['required']">Code is required</small>
-            <small *ngIf="codeForm.controls['code'].errors?.['pattern']">Enter 6 digits only</small>
+          <div class="input-group">
+            <label>Verification Code</label>
+            <div class="input-wrapper">
+              <input type="text" formControlName="code" placeholder="6-digit code" maxlength="6" />
+            </div>
+            <div class="error" *ngIf="codeForm.controls['code'].touched && codeForm.controls['code'].invalid">
+              <small *ngIf="codeForm.controls['code'].errors?.['required']">Code is required</small>
+              <small *ngIf="codeForm.controls['code'].errors?.['pattern']">Enter 6 digits only</small>
+            </div>
           </div>
-          <button type="submit" [disabled]="loading">Verify Code</button>
+          <button class="submit" type="submit" [disabled]="loading || codeForm.invalid">
+            {{ loading ? 'Verifying...' : 'Verify Code' }}
+          </button>
         </form>
 
         <!-- Reset Password Form -->
         <form *ngIf="step === 'reset'" [formGroup]="passwordForm" (ngSubmit)="resetPassword()">
-          <label>New Password</label>
-          <input type="password" formControlName="password" placeholder="New password" />
-          <label>Confirm Password</label>
-          <input type="password" formControlName="confirmPassword" placeholder="Confirm password" />
-          <div class="error" *ngIf="passwordForm.errors?.['mismatch'] && passwordForm.touched">
-            <small>Passwords do not match</small>
+          <div class="input-group">
+            <label>New Password</label>
+            <div class="input-wrapper">
+              <input type="password" formControlName="password" placeholder="••••••••" />
+            </div>
           </div>
-        <button type="submit" [disabled]="loading || passwordForm.invalid">Reset Password</button>
+          <div class="input-group">
+            <label>Confirm Password</label>
+            <div class="input-wrapper">
+              <input type="password" formControlName="confirmPassword" placeholder="••••••••" />
+            </div>
+            <div class="error" *ngIf="passwordForm.errors?.['mismatch'] && passwordForm.touched">
+              <small>Passwords do not match</small>
+            </div>
+          </div>
+          <button class="submit" type="submit" [disabled]="loading || passwordForm.invalid">
+            {{ loading ? 'Saving...' : 'Reset Password' }}
+          </button>
         </form>
 
-        <!-- Loading and Error Feedback -->
-        <div *ngIf="loading" class="loading">Processing...</div>
-        <div *ngIf="errorMsg" class="error-message">{{ errorMsg }}</div>
+        <!-- Loading and Feedback Info -->
+        <div *ngIf="errorMsg" class="error error-box">{{ errorMsg }}</div>
       </div>
     </div>
   </div>

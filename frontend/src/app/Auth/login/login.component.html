@@ -1,64 +1,127 @@
 <div class="container">
-  <div class="left-side">
-    <img
-      src="/assets/images/resume.jpg"
-      alt="resume image"
-      class="resume-img"
-    />
-  </div>
-
-  <div class="right-side">
-    <div class="form">
-      <h2>Login to Your Account</h2>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <label for="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          formControlName="email"
-          placeholder="Enter your Email here"
-        />
-        <div class="error" *ngIf="email?.touched && email?.invalid">
-          <small *ngIf="email?.errors?.['required']">Email is required</small>
-          <small *ngIf="email?.errors?.['email']">Invalid email format</small>
+  <!-- Glowing Auroras in the background -->
+  <div class="aurora-blur aurora-1"></div>
+  <div class="aurora-blur aurora-2"></div>
+  
+  <div class="auth-card">
+    <div class="left-side">
+      <div class="showcase-content">
+        <div class="brand">
+          <span class="brand-glow">Resumify AI</span>
+        </div>
+        <h1>Elevate Your Career with <span class="highlight">AI Power</span></h1>
+        <p class="tagline">Optimize your resume, match job roles, and crush ATS scans instantly.</p>
+        
+        <div class="mockup-ats-card">
+          <div class="mockup-header">
+            <span class="pulse-dot"></span>
+            <span class="mockup-title">ATS Sync Scanner</span>
+          </div>
+          <div class="mockup-body">
+            <div class="score-circle">
+              <svg viewBox="0 0 36 36" class="circular-chart green">
+                <path class="circle-bg"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+                <path class="circle"
+                  stroke-dasharray="94, 100"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+                <text x="18" y="20.35" class="percentage">94%</text>
+              </svg>
+            </div>
+            <div class="mockup-stats">
+              <div class="stat-row">
+                <span class="stat-label">Match Score</span>
+                <span class="stat-val text-green">Excellent</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-label">Keywords Found</span>
+                <span class="stat-val">18 / 20</span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <label for="password">Password</label>
-        <input
-          [type]="showPassword ? 'text' : 'password'"
-          id="password"
-          formControlName="password"
-          placeholder="Enter your Password here"
-        />
-        <div class="error" *ngIf="password?.touched && password?.invalid">
-          <small *ngIf="password?.errors?.['required']"
-            >Password is required</small
-          >
-          <small *ngIf="password?.errors?.['minlength']"
-            >Minimum 6 characters required</small
-          >
+        <div class="floating-skills">
+          <span class="skill-tag skill-1">Angular</span>
+          <span class="skill-tag skill-2">Spring Boot</span>
+          <span class="skill-tag skill-3">ATS Score</span>
+          <span class="skill-tag skill-4">TypeScript</span>
+          <span class="skill-tag skill-5">Gemini AI</span>
         </div>
-        <div class="forgot-password">
-          <a href="/forgot-password">Forgot Password?</a>
-        </div>
-        <button class="submit" type="submit">Login</button>
-      </form>
+      </div>
     </div>
 
-    <p class="login-link">
-      Don't have an account? <a href="/register">Create one</a>
-    </p>
+    <div class="right-side">
+      <div class="form-wrapper">
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Enter your details to access your account</p>
+        
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="input-group">
+            <label for="email">Email Address</label>
+            <div class="input-wrapper">
+              <input
+                type="email"
+                id="email"
+                formControlName="email"
+                placeholder="name@company.com"
+              />
+            </div>
+            <div class="error" *ngIf="email?.touched && email?.invalid">
+              <small *ngIf="email?.errors?.['required']">Email is required</small>
+              <small *ngIf="email?.errors?.['email']">Invalid email format</small>
+            </div>
+          </div>
 
-    <div class="divider">– OR –</div>
-    <div class="social-buttons">
-      <button class="go-btn">
-        <img src="assets/images/google.png" alt="Google" />
-        Sign in with Google
-      </button>
-      <button class="gi-btn">
-        <img src="assets/images/linkedin.png" alt="LinkedIn" />
-        Sign in with LinkedIn
-      </button>
+          <div class="input-group">
+            <label for="password">Password</label>
+            <div class="input-wrapper">
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                id="password"
+                formControlName="password"
+                placeholder="••••••••"
+              />
+              <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
+                <span class="eye-icon">{{ showPassword ? '👁️' : '👁️‍🗨️' }}</span>
+              </button>
+            </div>
+            <div class="error" *ngIf="password?.touched && password?.invalid">
+              <small *ngIf="password?.errors?.['required']">Password is required</small>
+              <small *ngIf="password?.errors?.['minlength']">Minimum 6 characters required</small>
+            </div>
+          </div>
+
+          <div class="forgot-password">
+            <a href="/forgot-password">Forgot Password?</a>
+          </div>
+
+          <button class="submit" type="submit" [disabled]="loginForm.invalid">
+            Login to Account
+          </button>
+        </form>
+
+        <div class="divider">
+          <span>or sign in with</span>
+        </div>
+
+        <div class="social-buttons">
+          <button class="social-btn google-btn" type="button">
+            <img src="assets/images/google.png" alt="Google" />
+            Google
+          </button>
+          <button class="social-btn linkedin-btn" type="button">
+            <img src="assets/images/linkedin.png" alt="LinkedIn" />
+            LinkedIn
+          </button>
+        </div>
+
+        <p class="auth-link">
+          Don't have an account? <a href="/register">Create one free</a>
+        </p>
+      </div>
     </div>
   </div>
 </div>
