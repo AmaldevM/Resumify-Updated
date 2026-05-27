@@ -6,7 +6,9 @@ import { Observable, tap, BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/auth';
+  private apiUrl = typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+    ? 'https://resumify-backend.onrender.com/api/auth'
+    : 'http://localhost:8080/api/auth';
 
   // 🟢 BehaviorSubject to track login status
   private isLoggedInSubject = new BehaviorSubject<boolean>(this.hasToken());
