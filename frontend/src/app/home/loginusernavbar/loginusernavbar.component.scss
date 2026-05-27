@@ -1,18 +1,35 @@
 .resumify-navbar {
-  background-color: #181818;
+  position: sticky;
+  top: 0;
+  background: rgba(15, 15, 15, 0.75) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(48, 209, 88, 0.12);
   color: white;
-  padding: 0 1.5rem;
+  padding: 0.5rem 2rem;
+  height: 70px;
   width: 100%;
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  position: relative;
+  box-sizing: border-box;
   z-index: 1000;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 
   .logo {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #3cb662;
+    font-size: 1.6rem;
+    font-weight: 800;
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, #00ff88, #30d158);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.15));
+    cursor: pointer;
+    transition: opacity 0.3s;
+
+    &:hover {
+      opacity: 0.9;
+    }
   }
 
   .spacer {
@@ -21,6 +38,7 @@
 
   .menu-button {
     display: none;
+    color: #fff;
 
     @media (max-width: 768px) {
       display: block;
@@ -29,122 +47,147 @@
 
   .desktop-nav {
     display: flex;
-    gap: 1rem;
+    align-items: center;
+    gap: 0.5rem;
 
     @media (max-width: 768px) {
       display: none;
     }
 
-    a,
-    button {
-      color: white;
-      font-weight: 500;
-      padding: 0.5rem 0.75rem;
-      border-radius: 4px;
-      transition: background-color 0.3s, color 0.3s;
-      background: none;
+    a, button {
+      color: #bbb !important;
+      font-weight: 500 !important;
+      font-family: 'Outfit', sans-serif !important;
+      font-size: 0.9rem !important;
+      padding: 0.4rem 1rem !important;
+      border-radius: 20px !important;
+      transition: all 0.3s ease !important;
+      line-height: 1.5 !important;
+      text-decoration: none;
+      background: transparent;
       border: none;
       cursor: pointer;
 
       &:hover {
-        color: #3a6d54;
-        background-color: rgba(255, 255, 255, 0.08);
+        color: #fff !important;
+        background-color: rgba(48, 209, 88, 0.08) !important;
       }
 
       &.upload-btn {
-        background-color: #3cb662;
-        color: white;
+        background: linear-gradient(135deg, #30d158 0%, #2ecc71 100%) !important;
+        color: white !important;
+        font-weight: 600 !important;
+        box-shadow: 0 4px 15px rgba(48, 209, 88, 0.2) !important;
 
         &:hover {
-          background-color: #2f9d58;
+          transform: translateY(-1px);
+          box-shadow: 0 6px 20px rgba(48, 209, 88, 0.35) !important;
         }
       }
 
-      &.auth-btn {
-        background-color: transparent;
-        border: 1.5px solid #3cb662;
-        color: #3cb662;
+      &.logout-btn {
+        border: 1px solid rgba(255, 107, 107, 0.25) !important;
+        color: #ff6b6b !important;
 
         &:hover {
-          background-color: #3cb662;
-          color: white;
+          background-color: rgba(255, 107, 107, 0.08) !important;
+          border-color: #ff6b6b !important;
+          color: white !important;
         }
       }
     }
 
     .user-name {
       font-weight: 500;
+      font-family: 'Outfit', sans-serif;
       margin-right: 0.5rem;
-      margin: 0.5rem;
-      color: #3cb662;
+      color: #30d158;
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      background: rgba(48, 209, 88, 0.06);
+      border: 1px solid rgba(48, 209, 88, 0.1);
+      font-size: 0.9rem;
     }
   }
 
   .mobile-nav {
-    display: none;
+    display: flex;
     flex-direction: column;
     width: 100%;
-    background-color: #181818;
+    background: rgba(15, 15, 15, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(48, 209, 88, 0.12);
     position: absolute;
-    top: 100%;
+    top: 70px;
     left: 0;
-    padding: 0.5rem 0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    transition: max-height 0.3s ease, opacity 0.3s ease;
+    padding: 1rem 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease-in-out;
     overflow: hidden;
     max-height: 0;
     opacity: 0;
+    pointer-events: none;
 
     &.active {
-      display: flex;
       max-height: 500px;
       opacity: 1;
+      pointer-events: auto;
     }
 
-    a,
-    button {
-      padding: 1rem 2rem;
-      color: white;
-      font-weight: 500;
-      text-align: left;
-      background: none;
+    a, button {
+      padding: 0.8rem 2rem !important;
+      color: #ccc !important;
+      font-weight: 500 !important;
+      font-family: 'Outfit', sans-serif !important;
+      text-align: left !important;
+      border-radius: 0 !important;
+      background: transparent;
       border: none;
-      border-radius: 0;
-      text-align: left;
       cursor: pointer;
+      width: 100%;
+      box-sizing: border-box;
 
       &:hover {
-        background-color: rgba(255, 255, 255, 0.08);
+        background-color: rgba(255, 255, 255, 0.04) !important;
+        color: #fff !important;
       }
 
       &.upload-btn {
-        background-color: #3cb662;
+        background: rgba(48, 209, 88, 0.1) !important;
+        color: #30d158 !important;
+        font-weight: 600 !important;
+        border-left: 3px solid #30d158;
 
         &:hover {
-          background-color: #2f9d58;
+          background-color: rgba(48, 209, 88, 0.15) !important;
         }
       }
 
-      &.auth-btn {
-        border: 1.5px solid #3cb662;
-        color: #3cb662;
-        margin: 0.25rem 1.5rem;
-        text-align: center;
-        border-radius: 4px;
-        padding: 0.5rem 0;
+      &.logout-btn {
+        border: 1px solid rgba(255, 107, 107, 0.2) !important;
+        color: #ff6b6b !important;
+        margin: 0.5rem 2rem !important;
+        width: calc(100% - 4rem) !important;
+        text-align: center !important;
+        border-radius: 8px !important;
+        padding: 0.5rem 0 !important;
 
         &:hover {
-          background-color: #3cb662;
-          color: white;
+          background-color: rgba(255, 107, 107, 0.08) !important;
+          border-color: #ff6b6b !important;
+          color: white !important;
         }
       }
     }
 
     .user-name {
-      color: #3cb662;
+      color: #30d158;
       font-weight: 500;
-      padding: 2rem 2rem;
-      margin-top: 20px;
+      padding: 0.8rem 2rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      display: block;
     }
 
     @media (min-width: 769px) {

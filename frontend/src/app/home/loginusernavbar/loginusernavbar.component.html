@@ -17,7 +17,7 @@
 
   <ng-container *ngIf="isLoggedIn">
     <span class="user-name">Hi, {{ username }}</span>
-    <button mat-button (click)="logout()">Logout</button>
+    <button mat-button (click)="logout()" class="logout-btn">Logout</button>
   </ng-container>
 </div>
 
@@ -32,7 +32,7 @@
 
 <ng-container *ngIf="isLoggedIn">
   <span class="user-name">Hi, {{ username }}</span>
-  <button mat-button (click)="logout(); closeMenu()">Logout</button>
+  <button mat-button (click)="logout(); closeMenu()" class="logout-btn">Logout</button>
 </ng-container>
 
   </div>
