@@ -61,20 +61,54 @@ $breakpoints: (
   color: white;
   min-height: 100vh;
   padding-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+
+  &::before, &::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.08;
+    z-index: 0;
+    pointer-events: none;
+    animation: float 25s ease-in-out infinite;
+  }
+
+  &::before {
+    top: -10%;
+    left: -10%;
+    width: 450px;
+    height: 450px;
+    background-color: #00ff88;
+  }
+
+  &::after {
+    bottom: 20%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background-color: #00b35c;
+    animation-delay: -5s;
+    animation-duration: 30s;
+  }
 }
 
- .content-wrapper {
+.content-wrapper {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .hero-section {
   text-align: center;
-  padding: 4rem 0 2rem;
+  padding: 5rem 0 3rem;
 
   h1 {
     margin-bottom: 2rem;
+    animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     
     span {
       font-size: 5.5rem;
@@ -110,10 +144,13 @@ $breakpoints: (
     font-size: 1.5rem;
     color: #a0a0a0;
     font-weight: 500;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
     letter-spacing: -0.5px;
+    animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 0.15s;
   }
 }
+
 
 
 .cta-section {
@@ -386,3 +423,28 @@ $breakpoints: (
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+// Custom Animations
+@keyframes float {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(2% , -4%) scale(1.05);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
